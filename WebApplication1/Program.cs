@@ -2,6 +2,7 @@ using System.Data.SqlClient;
 using System.Net;
 using System.Security;
 using APBD_assignment_4;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,20 @@ app.MapGet("/api/animals", () => animalsController.getAnimals())
     .WithName("GetAnimals")
     .WithOpenApi();
 
+app.MapPost("/api/animals", ([FromBody] AnimalNoId animal) =>
+    {
+        animalsController.addAnimal(animal);
+    })
+    .WithName("AddAnimal")
+    .WithOpenApi();
+
+app.MapPut("/api/animals/{id:int}", (int id, [FromBody] AnimalOptional updatedAnimal) =>
+    {
+        animalsController.updateAnimal(id, updatedAnimal);
+    })
+    .WithName("EditAnimalById")
+    .WithOpenApi();
+
 /*
 app.MapGet("/animals/{id:int}", (int id) =>
 {
@@ -36,12 +51,7 @@ app.MapGet("/animals/{id:int}", (int id) =>
     .WithName("GetAnimalById")
     .WithOpenApi();
 
-app.MapPost("/animals", (string name, AnimalCategory animalCategory, float weight, string furColor) =>
-{
-    animals.Add(new Animal(name, animalCategory, weight, furColor));
-})
-    .WithName("AddAnimal")
-    .WithOpenApi();
+
 
 app.MapPut("/animals/{id:int}", (int id, string? name, AnimalCategory? animalCategory, float? weight, string? furColor) =>
     {

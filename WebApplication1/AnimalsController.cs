@@ -29,4 +29,26 @@ public class AnimalsController
 
         return animals;
     }
+
+    public void addAnimal(AnimalNoId animal)
+    {
+        SqlCommand command = new SqlCommand("INSERT INTO ANIMAL (Name, Description, Category, Area) VALUES (@name, @description, @category, @area)", this._connection);
+        command.Parameters.AddWithValue("@name", animal.Name);
+        command.Parameters.AddWithValue("@description", animal.Description);
+        command.Parameters.AddWithValue("@category", animal.Category);
+        command.Parameters.AddWithValue("@area", animal.Area);
+        command.ExecuteNonQuery();
+    }
+
+    public void updateAnimal(int animalId, AnimalOptional animal)
+    {
+        SqlCommand command = new SqlCommand("UPDATE ANIMAL SET Name = @name, Description = @description, Category = @category, Area = @area WHERE idAnimal = @idAnimal", this._connection);
+        command.Parameters.AddWithValue("@idAnimal", animalId);
+        
+        command.Parameters.AddWithValue("@name", animal.Name);
+        command.Parameters.AddWithValue("@description", animal.Description);
+        command.Parameters.AddWithValue("@category", animal.Category);
+        command.Parameters.AddWithValue("@area", animal.Area);
+        command.ExecuteNonQuery();
+    }
 }

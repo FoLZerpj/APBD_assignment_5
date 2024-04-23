@@ -1,19 +1,26 @@
 ﻿namespace APBD_assignment_4;
 
-public class Animal
+public class Animal(int id, string name, string description, string category, string area)
 {
-    public int Id { get; private set; }
-    public string Name { get; private set; }
-    public string Description { get; private set; }
-    public string Category { get; private set; }
-    public string Area { get; private set; }
+    public int Id { get; private set; } = id;
+    public string Name { get; private set; } = name;
+    public string Description { get; private set; } = description;
+    public string Category { get; private set; } = category;
+    public string Area { get; private set; } = area;
+}
 
-    public Animal(int id, string name, string description, string category, string area)
-    {
-        this.Id = id;
-        this.Name = name;
-        this.Description = description;
-        this.Category = category;
-        this.Area = area;
-    }
+public class AnimalNoId(string name, string description, string category, string area)
+{
+    public string Name { get; private set; } = name;
+    public string Description { get; private set; } = description;
+    public string Category { get; private set; } = category;
+    public string Area { get; private set; } = area;
+}
+
+public class AnimalOptional(string? name, string? description, string? category, string? area)
+{
+    public string? Name { get; private set; } = name;
+    public string? Description { get; private set; } = description;
+    public string? Category { get; private set; } = category;
+    public string? Area { get; private set; } = area;
 }
