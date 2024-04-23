@@ -1,4 +1,4 @@
-﻿namespace APBD_assignment_4;
+﻿namespace APBD_assignment_5;
 
 using System.Data.SqlClient;
 
@@ -12,23 +12,21 @@ public class AnimalsController
         this._connection.Open();
     }
 
-    public List<Animal> getAnimals(string? orderBy)
+    public List<Animal> GetAnimals(AnimalOrderBy? orderBy)
     {
-        SqlCommand command = new SqlCommand("SELECT * FROM ANIMAL ORDER BY @orderBy ASC", this._connection);
-
         string orderByChecked =
-            orderBy?.ToLower() switch
+            orderBy switch
             {
                 null => "Name",
-                "name" => "Name",
-                "description" => "Description",
-                "category" => "Category",
-                "area" => "Area",
+                AnimalOrderBy.Name => "Name",
+                AnimalOrderBy.Description => "Description",
+                AnimalOrderBy.Category => "Category",
+                AnimalOrderBy.Area => "Area",
                 _ => throw new Exception()
             };
-        command.Parameters.AddWithValue("@orderBy", orderByChecked);
-        
-        SqlDataReader dataReader = command.ExecuteReader();
+        SqlCommand command = new SqlCommand("SELECT * FROM ANIMAL ORDER BY " + orderByChecked + " ASC", this._connection);
+
+        using SqlDataReader dataReader = command.ExecuteReader();
         List<Animal> animals = new List<Animal>();
         while (dataReader.Read())
         {
@@ -39,11 +37,10 @@ public class AnimalsController
             string area = (string)dataReader.GetValue(4);
             animals.Add(new Animal(id, name, description, category, area));
         }
-
         return animals;
     }
 
-    public void addAnimal(AnimalNoId animal)
+    public void AddAnimal(AnimalNoId animal)
     {
         SqlCommand command = new SqlCommand("INSERT INTO ANIMAL (Name, Description, Category, Area) VALUES (@name, @description, @category, @area)", this._connection);
         command.Parameters.AddWithValue("@name", animal.Name);
@@ -53,7 +50,7 @@ public class AnimalsController
         command.ExecuteNonQuery();
     }
 
-    public void updateAnimal(int animalId, AnimalOptional animal)
+    public void UpdateAnimal(int animalId, AnimalNoId animal)
     {
         SqlCommand command = new SqlCommand("UPDATE ANIMAL SET Name = @name, Description = @description, Category = @category, Area = @area WHERE idAnimal = @idAnimal", this._connection);
         command.Parameters.AddWithValue("@idAnimal", animalId);
@@ -65,7 +62,7 @@ public class AnimalsController
         command.ExecuteNonQuery();
     }
 
-    public void deleteAnimal(int animalId)
+    public void DeleteAnimal(int animalId)
     {
         SqlCommand command = new SqlCommand("DELETE FROM ANIMAL WHERE idAnimal = @idAnimal", this._connection);
         command.Parameters.AddWithValue("@idAnimal", animalId);

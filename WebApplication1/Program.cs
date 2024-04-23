@@ -1,7 +1,4 @@
-using System.Data.SqlClient;
-using System.Net;
-using System.Security;
-using APBD_assignment_4;
+using APBD_assignment_5;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,30 +19,30 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-const string ConnectionString = "db-mssql;Initial Catalog=2019SBD;Integrated Security=True;Trust Server Certificate=True";
+const string ConnectionString = "Data Source=db-mssql;Initial Catalog=2019SBD;Integrated Security=True";
 var animalsController = new AnimalsController(ConnectionString);
 
-app.MapGet("/api/animals", (string? orderBy) => animalsController.getAnimals(orderBy))
+app.MapGet("/api/animals", (AnimalOrderBy? orderBy) => animalsController.GetAnimals(orderBy))
     .WithName("GetAnimals")
     .WithOpenApi();
 
 app.MapPost("/api/animals", ([FromBody] AnimalNoId animal) =>
     {
-        animalsController.addAnimal(animal);
+        animalsController.AddAnimal(animal);
     })
     .WithName("AddAnimal")
     .WithOpenApi();
 
-app.MapPut("/api/animals/{id:int}", (int id, [FromBody] AnimalOptional updatedAnimal) =>
+app.MapPut("/api/animals/{id:int}", (int id, [FromBody] AnimalNoId updatedAnimal) =>
     {
-        animalsController.updateAnimal(id, updatedAnimal);
+        animalsController.UpdateAnimal(id, updatedAnimal);
     })
     .WithName("EditAnimalById")
     .WithOpenApi();
 
 app.MapDelete("/api/animals/{id:int}", (int id) =>
     {
-        animalsController.deleteAnimal(id);
+        animalsController.DeleteAnimal(id);
     })
     .WithName("DeleteAnimalById")
     .WithOpenApi();
