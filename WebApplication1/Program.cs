@@ -43,45 +43,11 @@ app.MapPut("/api/animals/{id:int}", (int id, [FromBody] AnimalOptional updatedAn
     .WithName("EditAnimalById")
     .WithOpenApi();
 
-/*
-app.MapGet("/animals/{id:int}", (int id) =>
-{
-    return animals.First(animal => animal.Id == id);
-})
-    .WithName("GetAnimalById")
-    .WithOpenApi();
-
-
-
-app.MapPut("/animals/{id:int}", (int id, string? name, AnimalCategory? animalCategory, float? weight, string? furColor) =>
+app.MapDelete("/api/animals/{id:int}", (int id) =>
     {
-        Animal animal = animals.First(animal => animal.Id == id);
-        if (name != null)
-        {
-            animal.Name = name;
-        }
-        if (animalCategory.HasValue)
-        {
-            animal.Category = animalCategory.Value;
-        }
-        if (weight.HasValue)
-        {
-            animal.Weight = weight.Value;
-        }
-        if (furColor != null)
-        {
-            animal.FurColor = furColor;
-        }
+        animalsController.deleteAnimal(id);
     })
-    .WithName("EditAnimalById")
-    .WithOpenApi();
-
-app.MapDelete("/animals/{id:int}", (int id) =>
-{
-    animals.Remove(animals.First(animal => animal.Id == id));
-})
     .WithName("DeleteAnimalById")
     .WithOpenApi();
-*/
 
 app.Run();

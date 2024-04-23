@@ -51,4 +51,11 @@ public class AnimalsController
         command.Parameters.AddWithValue("@area", animal.Area);
         command.ExecuteNonQuery();
     }
+
+    public void deleteAnimal(int animalId)
+    {
+        SqlCommand command = new SqlCommand("DELETE FROM ANIMAL WHERE idAnimal = @idAnimal", this._connection);
+        command.Parameters.AddWithValue("@idAnimal", animalId);
+        command.ExecuteNonQuery();
+    }
 }
