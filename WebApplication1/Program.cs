@@ -1,3 +1,6 @@
+using System.Data.SqlClient;
+using System.Net;
+using System.Security;
 using APBD_assignment_4;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,16 +21,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var animals = new List<Animal>()
-{
-    new Animal("Name1", AnimalCategory.Cat, 1.0f, "white"),
-    new Animal("Name2", AnimalCategory.Dog, 2.0f, "black"),
-};
+const string ConnectionString = "db-mssql;Initial Catalog=2019SBD;Integrated Security=True;Trust Server Certificate=True";
+var animalsController = new AnimalsController(ConnectionString);
 
-app.MapGet("/animals", () => animals)
+app.MapGet("/api/animals", () => animalsController.getAnimals())
     .WithName("GetAnimals")
     .WithOpenApi();
 
+/*
 app.MapGet("/animals/{id:int}", (int id) =>
 {
     return animals.First(animal => animal.Id == id);
@@ -71,23 +72,6 @@ app.MapDelete("/animals/{id:int}", (int id) =>
 })
     .WithName("DeleteAnimalById")
     .WithOpenApi();
-
-var visits = new List<AnimalVisit>()
-{
-    new AnimalVisit(DateTime.Now, animals[0], "Description1", 1.0f),
-    new AnimalVisit(DateTime.Now, animals[1], "Description1", 2.0f),
-};
-
-app.MapGet("/visits", () => visits)
-    .WithName("GetVisits")
-    .WithOpenApi();
-
-app.MapPost("/visits", (DateTime date, int animalId, string description, float visitPrice) =>
-    {
-        Animal animal = animals.First(animal => animal.Id == animalId);
-        visits.Add(new AnimalVisit(date, animal, description, visitPrice));
-    })
-    .WithName("AddVisit")
-    .WithOpenApi();
+*/
 
 app.Run();

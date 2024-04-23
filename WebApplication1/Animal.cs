@@ -3,28 +3,17 @@
 public class Animal
 {
     public int Id { get; private set; }
-    public string Name { get; set; }
-    public AnimalCategory Category { get; set; }
-    public float Weight { get; set; }
-    public string FurColor { get; set; }
+    public string Name { get; private set; }
+    public string Description { get; private set; }
+    public string Category { get; private set; }
+    public string Area { get; private set; }
 
-    private static int _nextId = 0;
-    private int NextId
+    public Animal(int id, string name, string description, string category, string area)
     {
-        get
-        {
-            int ret = _nextId;
-            _nextId += 1;
-            return ret;
-        }
-    }
-
-    public Animal(string name, AnimalCategory category, float weight, string furColor)
-    {
-        this.Id = NextId;
+        this.Id = id;
         this.Name = name;
+        this.Description = description;
         this.Category = category;
-        this.Weight = weight;
-        this.FurColor = furColor;
+        this.Area = area;
     }
 }
