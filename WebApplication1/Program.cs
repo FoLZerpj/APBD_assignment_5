@@ -25,7 +25,7 @@ app.UseHttpsRedirection();
 const string ConnectionString = "db-mssql;Initial Catalog=2019SBD;Integrated Security=True;Trust Server Certificate=True";
 var animalsController = new AnimalsController(ConnectionString);
 
-app.MapGet("/api/animals", () => animalsController.getAnimals())
+app.MapGet("/api/animals", (string? orderBy) => animalsController.getAnimals(orderBy))
     .WithName("GetAnimals")
     .WithOpenApi();
 

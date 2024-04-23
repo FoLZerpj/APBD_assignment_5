@@ -12,9 +12,22 @@ public class AnimalsController
         this._connection.Open();
     }
 
-    public List<Animal> getAnimals()
+    public List<Animal> getAnimals(string? orderBy)
     {
-        SqlCommand command = new SqlCommand("SELECT * FROM ANIMAL", this._connection);
+        SqlCommand command = new SqlCommand("SELECT * FROM ANIMAL ORDER BY @orderBy ASC", this._connection);
+
+        string orderByChecked =
+            orderBy?.ToLower() switch
+            {
+                null => "Name",
+                "name" => "Name",
+                "description" => "Description",
+                "category" => "Category",
+                "area" => "Area",
+                _ => throw new Exception()
+            };
+        command.Parameters.AddWithValue("@orderBy", orderByChecked);
+        
         SqlDataReader dataReader = command.ExecuteReader();
         List<Animal> animals = new List<Animal>();
         while (dataReader.Read())
